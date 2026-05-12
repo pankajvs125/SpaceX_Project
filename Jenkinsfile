@@ -30,7 +30,7 @@ pipeline{
 				to:'siddardha070@gmail.com,pankajvs125@gmail.com,hasmita1919@gmail.com'
 			)
 		}
-		sucess{
+		success{
 			emailext(
 				subject:'SpaceX Project',
 				body:'Project got Sucess IP address 15.206.127.242:9000',
