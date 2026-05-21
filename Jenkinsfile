@@ -1,14 +1,14 @@
 pipeline{
 	agent any
 	stages{
+		stage("S3 Bucket"){
+			steps{
+				sh 'aws s3 cp . s3://spacex-project/ '
+				}
+			}
 		stage("docker image"){
 			steps{
 				sh 'docker build -t spacex .'
-				}
-			}
-		stage("docker container"){
-			steps{
-				sh 'docker run -d -p 9000:80 spacex'
 				}
 			}
 		stage("docker image push"){
@@ -19,6 +19,11 @@ pipeline{
 						sh 'docker push pankajvs125/spacex:v$BUILD_ID'
 					}
 				}
+			}
+		}
+		stage("docker container"){
+			steps{
+				sh 'docker run -d -p 9000:80 spacex'
 			}
 		}
 	}
@@ -34,7 +39,7 @@ pipeline{
 			emailext(
 				subject:'SpaceX Project',
 				body:'Project got Sucess IP address 15.206.127.242:9000',
-                                to:'siddardha070@gmail.com,pankajvs125@gmail.com,hasmita1919@gmail.com'
+                to:'siddardha070@gmail.com,pankajvs125@gmail.com,hasmita1919@gmail.com'
 			)
 		}
 	}
