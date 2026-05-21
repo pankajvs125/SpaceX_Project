@@ -3,7 +3,7 @@ pipeline{
 	stages{
 		stage("S3 Bucket"){
 			steps{
-				sh 'aws s3 cp . s3://spacex-project/ '
+				sh 'aws s3 cp . s3://spacex-project --recursive --exclude ".git/*" '
 				}
 			}
 		stage("docker image"){
