@@ -1,14 +1,14 @@
 pipeline{
 	agent any
 	stages{
+		stage("S3 Bucket"){
+			steps{
+				sh 'aws s3 cp . s3://spacex-project --recursive --exclude ".git/*" '
+				}
+			}
 		stage("docker image"){
 			steps{
 				sh 'docker build -t spacex .'
-				}
-			}
-		stage("docker container"){
-			steps{
-				sh 'docker run -d -p 9000:80 spacex'
 				}
 			}
 		stage("docker image push"){
@@ -21,20 +21,25 @@ pipeline{
 				}
 			}
 		}
+		stage("docker container"){
+			steps{
+				sh 'docker run -d -p 9000:80 spacex'
+			}
+		}
 	}
 	post{
-		Failure{
+		failure{
 			emailext(
 				subject:'SpaceX Project',
 				body:'Project got failed',
 				to:'siddardha070@gmail.com,pankajvs125@gmail.com,hasmita1919@gmail.com'
 			)
 		}
-		Sucess{
+		success{
 			emailext(
 				subject:'SpaceX Project',
 				body:'Project got Sucess IP address 15.206.127.242:9000',
-                                to:'siddardha070@gmail.com,pankajvs125@gmail.com,hasmita1919@gmail.com'
+                to:'siddardha070@gmail.com,pankajvs125@gmail.com,hasmita1919@gmail.com'
 			)
 		}
 	}
